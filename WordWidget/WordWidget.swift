@@ -42,7 +42,7 @@ struct SmallWidgetView: View {
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .containerBackground(for: .widget) { Color(.windowBackground) }
+        .containerBackground(for: .widget) { Color(.systemBackground) }
     }
 }
 
@@ -69,7 +69,7 @@ struct MediumWidgetView: View {
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .containerBackground(for: .widget) { Color(.windowBackground) }
+        .containerBackground(for: .widget) { Color(.systemBackground) }
     }
 }
 
@@ -80,7 +80,7 @@ struct PlaceholderWidgetView: View {
             .foregroundStyle(.secondary)
             .padding()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .containerBackground(for: .widget) { Color(.windowBackground) }
+            .containerBackground(for: .widget) { Color(.systemBackground) }
     }
 }
 

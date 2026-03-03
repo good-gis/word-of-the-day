@@ -29,7 +29,7 @@ struct Provider: TimelineProvider {
             )
         }
 
-        let nextRefresh = now.addingTimeInterval(3 * interval)
+        let nextRefresh = now.addingTimeInterval(interval)
         let timeline = Timeline(entries: entries, policy: .after(nextRefresh))
         completion(timeline)
     }
