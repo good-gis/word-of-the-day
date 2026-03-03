@@ -37,8 +37,6 @@ struct SmallWidgetView: View {
                 .font(.caption)
                 .foregroundStyle(.secondary)
                 .lineLimit(3)
-
-            Spacer()
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)

@@ -3,14 +3,12 @@ import Foundation
 final class SharedDataManager {
     static let shared = SharedDataManager()
 
-    private let suiteName = "group.com.wordoftheday.shared"
     private let wordsKey = "words"
+    private let defaults: UserDefaults?
 
-    private var defaults: UserDefaults? {
-        UserDefaults(suiteName: suiteName)
+    private init() {
+        defaults = UserDefaults(suiteName: "group.com.wordoftheday.shared")
     }
-
-    private init() {}
 
     func loadWords() -> [Word] {
         guard

@@ -13,7 +13,7 @@ struct Provider: TimelineProvider {
 
     func getSnapshot(in context: Context, completion: @escaping (WordEntry) -> Void) {
         let words = SharedDataManager.shared.loadWords()
-        let entry = WordEntry(date: Date(), word: words.randomElement())
+        let entry = WordEntry(date: Date(), word: words.first)
         completion(entry)
     }
 
@@ -22,15 +22,23 @@ struct Provider: TimelineProvider {
         let now = Date()
         let interval: TimeInterval = 4 * 60 * 60 // 4 hours
 
-        let entries: [WordEntry] = (0..<3).map { i in
+        guard !words.isEmpty else {
+            let entry = WordEntry(date: now, word: nil)
+            completion(Timeline(entries: [entry], policy: .never))
+            return
+        }
+
+        let shuffled = words.shuffled()
+        let count = min(3, shuffled.count)
+        let entries: [WordEntry] = (0..<count).map { i in
             WordEntry(
                 date: now.addingTimeInterval(Double(i) * interval),
-                word: words.randomElement()
+                word: shuffled[i]
             )
         }
 
-        let nextRefresh = now.addingTimeInterval(interval)
-        let timeline = Timeline(entries: entries, policy: .after(nextRefresh))
+        let lastEntryDate = entries.last!.date
+        let timeline = Timeline(entries: entries, policy: .after(lastEntryDate))
         completion(timeline)
     }
 }
