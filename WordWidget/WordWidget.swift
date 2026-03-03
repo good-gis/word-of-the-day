@@ -65,7 +65,7 @@ struct MediumWidgetView: View {
 
             Text(word.dateAdded.formatted(date: .abbreviated, time: .omitted))
                 .font(.caption2)
-                .foregroundStyle(.tertiary)
+                .foregroundStyle(.secondary)
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
