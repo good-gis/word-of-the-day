@@ -8,7 +8,7 @@ Add words with definitions, pin your favorite, and let the widget keep it front 
 
 ## 📸 Demo
 
-![demo]([demo_github.gif](https://github.com/good-gis/word-of-the-day/blob/main/docs/plans/demo_github.gif))
+![demo](/docs/plans/demo_github.gif)
 
 ---
 
