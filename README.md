@@ -30,6 +30,10 @@ Add words with definitions, pin your favorite, and let the widget keep it front 
 1. Go to [Releases](../../releases)
 2. Download the latest `.dmg`
 3. Open it and drag **Word Of The Day** to your Applications folder
+4. Run in terminal
+```bash
+xattr -d com.apple.quarantine /Applications/WordOfTheDay.app
+```
 
 ### Option 2 — Build from Source
 
