@@ -12,18 +12,24 @@ struct Provider: TimelineProvider {
     }
 
     func getSnapshot(in context: Context, completion: @escaping (WordEntry) -> Void) {
-        let words = SharedDataManager.shared.loadWords()
-        let entry = WordEntry(date: Date(), word: words.first)
+        let entry = WordEntry(date: Date(), word: resolveWord())
         completion(entry)
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<WordEntry>) -> Void) {
         let words = SharedDataManager.shared.loadWords()
         let now = Date()
-        let interval: TimeInterval = 4 * 60 * 60 // 4 hours
+        let interval: TimeInterval = 4 * 60 * 60
 
         guard !words.isEmpty else {
             let entry = WordEntry(date: now, word: nil)
+            completion(Timeline(entries: [entry], policy: .never))
+            return
+        }
+
+        if let pinnedId = SharedDataManager.shared.loadPinnedWordId(),
+           let pinned = words.first(where: { $0.id == pinnedId }) {
+            let entry = WordEntry(date: now, word: pinned)
             completion(Timeline(entries: [entry], policy: .never))
             return
         }
@@ -38,7 +44,15 @@ struct Provider: TimelineProvider {
         }
 
         let lastEntryDate = entries.last!.date
-        let timeline = Timeline(entries: entries, policy: .after(lastEntryDate))
-        completion(timeline)
+        completion(Timeline(entries: entries, policy: .after(lastEntryDate)))
+    }
+
+    private func resolveWord() -> Word? {
+        let words = SharedDataManager.shared.loadWords()
+        if let pinnedId = SharedDataManager.shared.loadPinnedWordId(),
+           let pinned = words.first(where: { $0.id == pinnedId }) {
+            return pinned
+        }
+        return words.first
     }
 }

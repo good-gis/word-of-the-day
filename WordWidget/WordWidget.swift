@@ -21,26 +21,33 @@ struct WordWidgetEntryView: View {
     }
 }
 
+private struct WidgetBackground: View {
+    @Environment(\.colorScheme) var colorScheme
+    var body: some View {
+        colorScheme == .dark ? Color(nsColor: .windowBackgroundColor) : Color.white
+    }
+}
+
 struct SmallWidgetView: View {
     let word: Word
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             Text(word.word)
-                .font(.title2)
+                .font(.title)
                 .fontWeight(.light)
                 .foregroundStyle(.primary)
-                .lineLimit(2)
-                .minimumScaleFactor(0.7)
+                .lineLimit(3)
+                .minimumScaleFactor(0.5)
 
             Text(word.description)
-                .font(.caption)
+                .font(.callout)
                 .foregroundStyle(.secondary)
-                .lineLimit(3)
+                .lineLimit(5)
         }
-        .padding()
+        .padding(6)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .containerBackground(for: .widget) { Color(.systemBackground) }
+        .containerBackground(for: .widget) { WidgetBackground() }
     }
 }
 
@@ -50,35 +57,37 @@ struct MediumWidgetView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             Text(word.word)
-                .font(.title2)
+                .font(.title)
                 .fontWeight(.light)
                 .foregroundStyle(.primary)
+                .lineLimit(2)
+                .minimumScaleFactor(0.5)
 
             Text(word.description)
-                .font(.caption)
+                .font(.callout)
                 .foregroundStyle(.secondary)
-                .lineLimit(2)
+                .lineLimit(4)
 
             Spacer()
 
             Text(word.dateAdded.formatted(date: .abbreviated, time: .omitted))
-                .font(.caption2)
+                .font(.caption)
                 .foregroundStyle(.secondary)
         }
-        .padding()
+        .padding(10)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .containerBackground(for: .widget) { Color(.systemBackground) }
+        .containerBackground(for: .widget) { WidgetBackground() }
     }
 }
 
 struct PlaceholderWidgetView: View {
     var body: some View {
         Text("Add words in the app")
-            .font(.caption)
+            .font(.callout)
             .foregroundStyle(.secondary)
             .padding()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .containerBackground(for: .widget) { Color(.systemBackground) }
+            .containerBackground(for: .widget) { WidgetBackground() }
     }
 }
 
@@ -89,8 +98,20 @@ struct WordWidget: Widget {
         StaticConfiguration(kind: kind, provider: Provider()) { entry in
             WordWidgetEntryView(entry: entry)
         }
-        .configurationDisplayName("Word of the Day")
+        .configurationDisplayName("Word Of The Day")
         .description("Shows a random word from your list.")
         .supportedFamilies([.systemSmall, .systemMedium])
     }
+}
+
+#Preview(as: .systemSmall) {
+    WordWidget()
+} timeline: {
+    WordEntry(date: .now, word: Word(word: "Ephemeral", description: "Lasting for a very short time"))
+}
+
+#Preview(as: .systemMedium) {
+    WordWidget()
+} timeline: {
+    WordEntry(date: .now, word: Word(word: "Ephemeral", description: "Lasting for a very short time"))
 }
